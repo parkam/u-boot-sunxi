@@ -20,3 +20,4 @@ void sunxi_usbc_enable(int index);
 void sunxi_usbc_disable(int index);
 void sunxi_usbc_vbus_enable(int index);
 void sunxi_usbc_vbus_disable(int index);
+int sunxi_usbc_vbus_detect(int index);
