@@ -137,6 +137,8 @@
 #define RUN_BOOT_RAM	""
 #endif
 
+
+
 #define CONFIG_BOOTCOMMAND \
 	RUN_BOOT_RAM \
 	"if run loadbootenv; then " \
@@ -166,6 +168,7 @@
 	"panicarg=panic=10\0" \
 	"extraargs=\0" \
 	"loglevel=8\0" \
+	"bootdelay=0\0" \
 	"scriptaddr=0x44000000\0" \
 	"device=mmc\0" \
 	"partition=0:1\0" \
@@ -185,26 +188,26 @@
 	"bootscr=boot.scr\0" \
 	"script=script.bin\0" \
 	"loadbootscr=" \
-	  "fatload $device $partition $scriptaddr ${bootscr}" \
+	  "ext2load $device $partition $scriptaddr ${bootscr}" \
 	  " || " \
 	  "ext2load $device $partition $scriptaddr boot/${bootscr}" \
 	  " ||" \
-	  "ext2load $device $partition $scriptaddr ${bootscr}" \
+	  "fatload $device $partition $scriptaddr ${bootscr}" \
 	  "\0" \
 	"loadbootenv=" \
-	  "fatload $device $partition $scriptaddr ${bootenv}" \
+	  "ext2load $device $partition $scriptaddr ${bootenv}" \
 	  " || " \
 	  "ext2load $device $partition $scriptaddr boot/${bootenv}" \
 	  " || " \
-	  "ext2load $device $partition $scriptaddr ${bootenv}" \
+	  "fatload $device $partition $scriptaddr ${bootenv}" \
 	  "\0" \
 	"loadkernel=" \
 	  "if "\
 	    "bootpath=/boot/" \
 	    " && " \
-	    "ext2load $device $partition 0x43000000 ${bootpath}${script}" \
+	    "ext3load $device $partition 0x43000000 ${bootpath}${script}" \
 	    " && " \
-	    "ext2load $device $partition 0x48000000 ${bootpath}${kernel}" \
+	    "ext3load $device $partition 0x48000000 ${bootpath}${kernel}" \
 	  ";then true; elif " \
 	    "bootpath=/" \
 	    " && " \
@@ -423,5 +426,8 @@
 #ifndef CONFIG_SPL_BUILD
 #include <config_distro_defaults.h>
 #endif
-
+#ifdef CONFIG_BOOTDELAY
+#undef CONFIG_BOOTDELAY
+#define CONFIG_BOOTDELAY 0
+#endif 
 #endif /* _SUNXI_COMMON_CONFIG_H */
