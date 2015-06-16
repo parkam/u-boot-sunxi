@@ -188,16 +188,16 @@
 	"bootscr=boot.scr\0" \
 	"script=script.bin\0" \
 	"loadbootscr=" \
-	  "ext2load $device $partition $scriptaddr ${bootscr}" \
+	  "ext4load $device $partition $scriptaddr ${bootscr}" \
 	  " || " \
-	  "ext2load $device $partition $scriptaddr boot/${bootscr}" \
+	  "ext4load $device $partition $scriptaddr boot/${bootscr}" \
 	  " ||" \
 	  "fatload $device $partition $scriptaddr ${bootscr}" \
 	  "\0" \
 	"loadbootenv=" \
-	  "ext2load $device $partition $scriptaddr ${bootenv}" \
+	  "ext4load $device $partition $scriptaddr ${bootenv}" \
 	  " || " \
-	  "ext2load $device $partition $scriptaddr boot/${bootenv}" \
+	  "ext4load $device $partition $scriptaddr boot/${bootenv}" \
 	  " || " \
 	  "fatload $device $partition $scriptaddr ${bootenv}" \
 	  "\0" \
@@ -205,9 +205,9 @@
 	  "if "\
 	    "bootpath=/boot/" \
 	    " && " \
-	    "ext3load $device $partition 0x43000000 ${bootpath}${script}" \
+	    "ext4load $device $partition 0x43000000 ${bootpath}${script}" \
 	    " && " \
-	    "ext3load $device $partition 0x48000000 ${bootpath}${kernel}" \
+	    "ext4load $device $partition 0x48000000 ${bootpath}${kernel}" \
 	  ";then true; elif " \
 	    "bootpath=/" \
 	    " && " \
@@ -217,9 +217,9 @@
 	  ";then true; elif " \
 	    "bootpath=/" \
 	    " && " \
-	    "ext2load $device $partition 0x43000000 ${bootpath}${script}" \
+	    "ext4load $device $partition 0x43000000 ${bootpath}${script}" \
 	    " && " \
-	    "ext2load $device $partition 0x48000000 ${bootpath}${kernel}" \
+	    "ext4load $device $partition 0x48000000 ${bootpath}${kernel}" \
 	  ";then true; else "\
 	    "false" \
 	  ";fi" \
